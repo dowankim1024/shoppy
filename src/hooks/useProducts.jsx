@@ -3,15 +3,15 @@ import { addNewProduct, getProducts as fetchProducts } from '../api/firebase';
 
 export default function useProducts() {
     const queryClient= useQueryClient();
-    const productsQuery = useQuery({queryKey: ['products'], queryFn: fetchProducts, staleTime: 1000*60});
+    const productsQuery = useQuery({queryKey: ['products'], queryFn: fetchProducts, staleTime: 1000*60,});
 
-    const { mutate: addProduct } = useMutation({
+    const addProduct = useMutation({
 
-        mutationFn: addNewProduct,
+        mutationFn: ({ product, url }) => addNewProduct(product, url),
 
         onSuccess: () => {
 
-            queryClient.invalidateQueries({ queryKey: 'products' });
+            queryClient.invalidateQueries({ queryKey: ['products'] });
 
         }
 
